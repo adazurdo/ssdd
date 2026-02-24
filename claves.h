@@ -15,7 +15,7 @@ struct Paquete {
  * 
  * @return int La función devuelve 0 en caso de éxito y -1 en caso de error.
  * @retval 0 en caso de exito.
- * @retval -1 en caso de error.asdasdasdasd
+ * @retval -1 en caso de error.
  */
 int destroy(void);
 
