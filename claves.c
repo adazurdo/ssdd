@@ -15,7 +15,6 @@
 #include <stdio.h>
 #include <string.h>
 #define FICHERO "data.bin"
-int inicializado;
 int clave;
 
 typedef struct Tupla {
@@ -27,18 +26,14 @@ typedef struct Tupla {
 };
 
 int destroy(void) {
-    inicializado = 0;
 
     if (remove(FICHERO) == -1) {
         return -1;
     }
 
-    inicializado = 1;
     return 0;
 }
 
-
-int f;
 ///////////////////////////
 int set_value(char *key, char *value1, int N_value2, float *V_value2, struct Paquete value3) {
                     //Este servicio inserta el elemento <key, value1, value2, value3>.
@@ -46,10 +41,8 @@ int set_value(char *key, char *value1, int N_value2, float *V_value2, struct Paq
                     //o que el valor N_value2 esté fuera de rango
 
     if (N_value2 < 1 || N_value2 > 32) { return -1;}
-
     FILE *f;
     struct Tupla t;
-
     //primero debemos asegurarnos de que no existe la clave
     f = fopen(FICHERO, "rb");
     if (f != NULL) {
@@ -61,13 +54,119 @@ int set_value(char *key, char *value1, int N_value2, float *V_value2, struct Paq
                 return -1;
             }
         }
+        fclose(f);
     } // si no existe, se crea
-
     f = fopen(FICHERO, "ab");
     if (f == NULL) {return -1;}
+    //rellenamos los campos de la tupla
+    strcpy(t.key, key);
+    strcpy(t.value1, value1);
+    t.N_value2 = N_value2;
+    for (int i = 0; i < N_value2; i++) {t.value2[i] = V_value2[i]; }
+    //insertamos
+    fwrite(&t, sizeof(struct Tupla), 1, f);
+    //cerramos fichero
+    fclose(f);
+    return 0;
+}
 
+////////////////
+int get_value(char *key, char *value1, int *N_value2, float *V_value2, struct Paquete *value3) {
+    //DEVUELVE LOS VALORES ASOCIADO SA UNA CLAVE
+    FILE *f;
+    struct Tupla t;
+    f = fopen(FICHERO, "rb");
+    if (f != NULL) { //mientars q no sea null leo en trozos del tmñ de la tupla
+        while (fread(&t, sizeof(struct Tupla), 1, f) == 1) {//mitrs q no de error la lect
+            if (strcmp(key, t.key) == 0) { //si he encintrado la clave
+               strcpy(value1, t.value1);
+                *N_value2 = t.N_value2;
+                for (int i = 0; i < t.N_value2; i++){
+                    V_value2[i] = t.value2[i];}
+                *value3 = t.value3;
 
+                fclose(f);
+                return 0; // si
+            }
+        }
+        fclose(f);
+        return -1;
+    }
 
+}
+
+int modify_value(char *key, char *value1, int N_value2, float *V_value2, struct Paquete value3) {
+    FILE *f;
+    struct Tupla t;
+
+    f = fopen(FICHERO, "rb+");
+
+    if (f != NULL) { //mientars q no sea null leo en trozos del tmñ de la tupla
+        while (fread(&t, sizeof(struct Tupla), 1, f) == 1) {//mitrs q no de error la lect
+                //comparamos con nuestro valor de tupla que nos han pasasdo
+            if (strcmp(key, t.key) == 0) { //devuelve 0 cuando son iguales
+               //si encunetro la clave
+                strcpy(t.value1, value1);
+                t.N_value2 = N_value2;
+                for (int i = 0; i < t.N_value2; i++){
+                    t.value2[i] = V_value2[i];}
+                t.value3 = value3;
+                //vuelvo a donde mepieza la tupla
+                fseek(f, -sizeof(struct Tupla), SEEK_CUR);
+                fwrite(&t, sizeof(struct Tupla), 1, f);
+
+                fclose(f);
+                return 0;
+            }
+        }
+        fclose(f);
+        return -1;
+    }
+}
+
+int delete_key(char *key) {
+    FILE *f;
+    FILE *aux;
+    struct Tupla t;
+    int encontrado = 0;
+
+    f = fopen(FICHERO, "rb");
+    aux = fopen("temp", "wb");
+    if (f != NULL) {
+        while (fread(&t, sizeof(struct Tupla), 1, f) == 1) {
+            if (strcmp(key, t.key) == 0) {
+                encontrado = 1;
+            }
+            fwrite(&t, sizeof(struct Tupla), 1, aux);
+        }
+        fclose(f);
+        fclose(aux);
+        if (encontrado == 0){
+            //si la clave no existe no necesito el temp porq no tengo que borrar nada
+            remove("temp");
+            return -1;
+        }
+        remove(FICHERO);
+        rename("temp", FICHERO);
+        return 0;
+
+    }
+}
+
+int exist(char *key) {
+    FILE *f;
+    struct Tupla t;
+
+    f = fopen(FICHERO, "rb");
+
+    if (f != NULL) { //mientars q no sea null leo en trozos del tmñ de la tupla
+        while (fread(&t, sizeof(struct Tupla), 1, f) == 1) {//mitrs q no de error la lect
+            if (strcmp(key, t.key) == 0) { //si he encintrado la clave
+                fclose(f);
+                return 1;
+            }
+        }
+    }
     fclose(f);
     return 0;
 }
