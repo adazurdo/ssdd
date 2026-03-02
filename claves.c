@@ -23,7 +23,8 @@ typedef struct Tupla {
     int N_value2;
     float value2[32];
     struct Paquete value3;
-};
+} Tupla;
+
 
 int destroy(void) {
 
@@ -62,6 +63,7 @@ int set_value(char *key, char *value1, int N_value2, float *V_value2, struct Paq
     strcpy(t.key, key);
     strcpy(t.value1, value1);
     t.N_value2 = N_value2;
+    t.value3 = value3;
     for (int i = 0; i < N_value2; i++) {t.value2[i] = V_value2[i]; }
     //insertamos
     fwrite(&t, sizeof(struct Tupla), 1, f);
