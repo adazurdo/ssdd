@@ -2,12 +2,24 @@
 #define CLAVES_H
 
 
-struct Paquete {
+struct Paquete {  //para value 3
    int x ;
    int y ;
    int z ;
 } ;
 
+////////////
+///ESTO LO CREO YO PARA HACER LA VERSIÓN DISTRIBUIDA DEL EJERCICIO
+typedef struct {
+   int op; //operacion a realizar: 0 = destroy/ 1=set_value / 2=
+   int key[256];
+   char value1[256];
+   int N_value2;
+   float V_value2[32];
+   struct Paquete value3;
+   char q_nom[256]; //cola a la que va destinada la petición
+} Peticion;
+////////////
 
 /**
  * @brief Esta llamada permite inicializar el servicio de elementos clave-valor1-valor2-valor3.
