@@ -5,7 +5,9 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_library(claves SHARED claves.c claves.h
         servidor-mq.c
-        servidor-mq.h)
+        servidor-mq.h
+        proxy-mq.h
+        proxy-mq.c)
 
 target_compile_options(claves PRIVATE -fPIC)
 
