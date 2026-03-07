@@ -9,7 +9,7 @@ int main() {
     printf("\n[1] Insertando primera tupla...\n");
     char *key = "clave 1";
     char *v1 = "ejemplo de valor 1";
-    float v2[] = {2.3, 0.5, 23.45};
+    float v2[] = {3, 5, 45};
     struct Paquete v3;
     v3.x = 10;
     v3.y = 5;
@@ -26,7 +26,7 @@ int main() {
     printf("\n[2] Insertando segunda tupla...\n");
     char *key2 = "clave 2";
     char *v1_2 = "ejemplo de valor 2";
-    float v2_2[] = {23.8, 7.5, 3.45};
+    float v2_2[] = {8, 7, 45};
     struct Paquete v3_2;
     v3_2.x = 1;
     v3_2.y = 2;
@@ -62,7 +62,7 @@ int main() {
     // MODIFY
     printf("\n[4] Probando MODIFY sobre clave 1...\n");
     char *v1_mod = "ejemplo de valor 1";
-    float v2_mod[] = {2.3, 0.5, 23.45};
+    float v2_mod[] = {3, 5, 45};
     struct Paquete v3_mod;
     v3_mod.x = 10;
     v3_mod.y = 5;

@@ -12,7 +12,7 @@ struct Paquete {  //para value 3
 ///ESTO LO CREO YO PARA HACER LA VERSIÓN DISTRIBUIDA DEL EJERCICIO
 typedef struct {
    int op; //operacion a realizar: 0 = destroy/ 1=set_value / 2=
-   int key[256];
+   char key[256];
    char value1[256];
    int N_value2;
    float V_value2[32];
