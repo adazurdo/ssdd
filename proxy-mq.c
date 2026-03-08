@@ -14,7 +14,7 @@ int enviar(Peticion peticion) {
 
     struct mq_attr attr;
     attr.mq_msgsize = sizeof(Peticion);
-    attr.mq_curmsgs = 10;
+    attr.mq_maxmsg = 10;
     sprintf(nom_cola, "/CLIENTE_%d", getpid());
     strcpy(peticion.q_nom, nom_cola);
 
