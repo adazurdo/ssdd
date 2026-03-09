@@ -4,10 +4,13 @@
 
 #include "app-cliente.h"
 #include <stdio.h>
+#include <unistd.h>
+
 #include "claves.h"
 
 int main() {
 
+    sleep(15);  //para probar en paralelo
     printf("=== INICIO DEL PROGRAMA ===\n");
 
     // INSERTAMOS PRIMERA TUPLA
